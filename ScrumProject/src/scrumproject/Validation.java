@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import javax.swing.JOptionPane;
 import oru.inf.InfDB;
 import oru.inf.InfException;
@@ -17,14 +18,49 @@ import oru.inf.InfException;
  */
 public class Validation {
     
+    private static boolean isAdmin = false;
     private static InfDB idb;
     
     public Validation(){
     try{
+        //Connects to database with an absolute path
             Path path = Paths.get("ScrumProject.FDB").toRealPath(LinkOption.NOFOLLOW_LINKS);
             idb = new InfDB(path.toString());
         }catch(InfException | IOException e){
             JOptionPane.showMessageDialog(null, e);
         }
+    }
+    //Sets true if admin logs in
+    public static boolean getAdmin()
+    {
+        return isAdmin;
+    }
+    
+    //Checks if a textfield is empty
+    public boolean checkIfTxtIsEmpty(String textfalt){      
+        boolean isEmpty = false;
+        
+        if(textfalt.isEmpty() || textfalt == ""){
+            isEmpty = true;
+        }
+        return isEmpty;
+    }
+    
+    public boolean checkLogin(String user, String password){
+        boolean loginMatch = false;
+        //SQL koden som hämtar ut raden som stämmer överrens med vad användaren matat in. 
+        String sql = "select email, pW from EMPLOYEE where Employee.EMAIL = '"+ user +"' and Employee.PW = '"+ password +"'";
+        
+        try{
+            HashMap<String, String> loggin = idb.fetchRow(sql);
+            //Kollar om inloggningsuppgifterna stämmer överrens med databasen. Om det gör det sätts boolean loginMatch till true.
+            //Matchar inloggningsuppgifterna med databasen kommer användaren få tillgång till administratör sidorna inom systemet.
+            if(user.equals(loggin.get("EMAIL")) && password.equals(loggin.get("PW"))){
+                loginMatch = true;
+            }
+        }catch(Exception e){
+            
+        }
+        return loginMatch;
     }
 }
