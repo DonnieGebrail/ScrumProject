@@ -5,6 +5,12 @@
  */
 package scrumproject;
 
+import java.io.IOException;
+import java.nio.file.LinkOption;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.HashMap;
 import javax.swing.JOptionPane;
 import oru.inf.InfDB;
 import oru.inf.InfException;
@@ -22,8 +28,34 @@ public class EmployeePageAdmin extends javax.swing.JFrame {
      */
     public EmployeePageAdmin() {
         initComponents();
+        try{
+        //Connects to database with an absolute path
+            Path path = Paths.get("ScrumProject.FDB").toRealPath(LinkOption.NOFOLLOW_LINKS);
+            idb = new InfDB(path.toString());
+        }catch(InfException | IOException e){
+            JOptionPane.showMessageDialog(null, e);
+        }
+        fillCbNotAdmin();
          
     }
+    
+    private void fillCbNotAdmin()
+    {
+      String sql = "Select EMAIL, EMPLOYEEID from EMPLOYEE where ISADMIN = 0"; //Gör en string av sqlfrågan.
+      try {
+            ArrayList<HashMap<String, String>> fillList = idb.fetchRows(sql); //Fyller cblistan med hjälp av databasen och sqlfrågan.
+            
+            for (int i = 0; i < fillList.size(); i++) //Fyller cb
+            {
+                String email = fillList.get(i).get("EMAIL");
+                
+                cbGetAllNotAdmin.addItem(email);
+           }
+      }
+      catch (InfException e)
+      {
+      }
+      }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -63,6 +95,9 @@ public class EmployeePageAdmin extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jTextField9 = new javax.swing.JTextField();
+        jPanel4 = new javax.swing.JPanel();
+        cbGetAllNotAdmin = new javax.swing.JComboBox<>();
+        btnMakeAdmin = new javax.swing.JButton();
         btnReturnToStartPage = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -167,15 +202,13 @@ public class EmployeePageAdmin extends javax.swing.JFrame {
                                         .addComponent(jLabel11)
                                         .addComponent(jLabel12))
                                     .addGap(8, 8, 8))
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                                    .addComponent(jLabel10)
-                                    .addGap(18, 18, 18)))
+                                .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING))
                             .addGap(6, 6, 6)
                             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(txtRegPhone, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(txtRegEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(txtRegName, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addGap(0, 0, 0))
+                .addContainerGap(177, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -188,7 +221,7 @@ public class EmployeePageAdmin extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtRegPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel11))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(47, 47, 47)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtRegEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel12))
@@ -198,7 +231,7 @@ public class EmployeePageAdmin extends javax.swing.JFrame {
                     .addComponent(jLabel7))
                 .addGap(18, 18, 18)
                 .addComponent(chkRegAdmin)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnReg)
                 .addGap(52, 52, 52))
         );
@@ -267,6 +300,36 @@ public class EmployeePageAdmin extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Andras kontaktuppgifter", jPanel3);
 
+        btnMakeAdmin.setText("Gör till admin");
+        btnMakeAdmin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMakeAdminActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(77, 77, 77)
+                .addComponent(cbGetAllNotAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnMakeAdmin)
+                .addContainerGap(132, Short.MAX_VALUE))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(90, 90, 90)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnMakeAdmin)
+                    .addComponent(cbGetAllNotAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(160, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Ändra anställd", jPanel4);
+
         btnReturnToStartPage.setText("Tillbaka");
         btnReturnToStartPage.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -321,18 +384,18 @@ public class EmployeePageAdmin extends javax.swing.JFrame {
         String admin = "1";
         String notAdmin = "0";
         
-        String increment = Validation.hämtaIdb().getAutoIncrement("EMPLOYEE", "EMPLOYEEID");
+        String increment = idb.getAutoIncrement("EMPLOYEE", "EMPLOYEEID");
         //Automatic EmpleyeeID.
         
              if(chkRegAdmin.isSelected()==true) //If the checkbox for admin is checked.
                 {
                   String sql = "INSERT INTO EMPLOYEE VALUES ('" + increment + "', '" + name + "', '" + email + "', " + admin + ", '" + pw + "', '" + phone + "')";
-                  Validation.hämtaIdb().insert(sql);
+                  idb.insert(sql);
                   JOptionPane.showMessageDialog(null, "Anställd tillagd som admin!");
                 }  
                   else { //If the checkbox isn't checked.
                           String sql1 = "INSERT INTO EMPLOYEE VALUES ('" + increment + "', '" + name + "', '" + email + "', " + notAdmin + ", '" + pw + "', '" + phone + "')";
-                          Validation.hämtaIdb().insert(sql1);  
+                          idb.insert(sql1);  
                           JOptionPane.showMessageDialog(null, "Anställd tillagd!");
                        }
         
@@ -346,6 +409,24 @@ public class EmployeePageAdmin extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(null, "Fel!" + e);
                                  }    
     }//GEN-LAST:event_btnRegActionPerformed
+
+    private void btnMakeAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMakeAdminActionPerformed
+        try {
+        int index = cbGetAllNotAdmin.getSelectedIndex();
+        String email = cbGetAllNotAdmin.getItemAt(index); //Gör en string av det som står i comboboxen
+        
+        String sql = "UPDATE EMPLOYEE SET ISADMIN = 1 where EMAIL = '" + email + "'"; //Gör en string av sql.
+           
+            
+             idb.update(sql); //Ändrar adminstatus
+             cbGetAllNotAdmin.setSelectedIndex(0);
+             JOptionPane.showMessageDialog(null, "Adminstatus uppdaterat");
+             } 
+            
+        catch(InfException ex) {
+            JOptionPane.showMessageDialog(null, "Fel.");    
+                               }  
+    }//GEN-LAST:event_btnMakeAdminActionPerformed
 
     /**
      * @param args the command line arguments
@@ -384,8 +465,10 @@ public class EmployeePageAdmin extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnMakeAdmin;
     private javax.swing.JButton btnReg;
     private javax.swing.JButton btnReturnToStartPage;
+    private javax.swing.JComboBox<String> cbGetAllNotAdmin;
     private javax.swing.JCheckBox chkRegAdmin;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
@@ -402,6 +485,7 @@ public class EmployeePageAdmin extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextField jTextField1;
