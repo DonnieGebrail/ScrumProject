@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package scrumproject;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
@@ -22,13 +23,33 @@ public class Validation {
     private static InfDB idb;
     
     public Validation(){
-    try{
+    //try{
         //Connects to database with an absolute path
-            Path path = Paths.get("ScrumProject.FDB").toRealPath(LinkOption.NOFOLLOW_LINKS);
-            idb = new InfDB(path.toString());
-        }catch(InfException | IOException e){
-            JOptionPane.showMessageDialog(null, e);
+            //Path path = Paths.get("ScrumProject.FDB").toRealPath(LinkOption.NOFOLLOW_LINKS);
+            //idb = new InfDB(path.toString());
+        //}catch(InfException | IOException e){
+           // JOptionPane.showMessageDialog(null, e);
+        //}
+    }
+    
+    public static InfDB hämtaIdb()
+             //Gör inladdningen av databasen till en klass så att vi bara kan använda denna metod i andra klasser.
+    {
+        if (idb == null)
+        {
+            File db = new File ("ScrumProject.FDB");
+            System.out.println (db.getAbsolutePath());
+            try 
+            {
+                idb = new InfDB(db.getAbsolutePath());
+            }
+            catch (InfException ex)
+            {
+                System.out.println(ex.getMessage());
+            }
         }
+        return idb;
+        
     }
     //Sets true if admin logs in
     public static boolean getAdmin()

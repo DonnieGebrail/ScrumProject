@@ -5,17 +5,24 @@
  */
 package scrumproject;
 
+import javax.swing.JOptionPane;
+import oru.inf.InfDB;
+import oru.inf.InfException;
+
 /**
  *
  * @author donniegebrail
  */
 public class EmployeePageAdmin extends javax.swing.JFrame {
+    
+    private static InfDB idb;
 
     /**
      * Creates new form EmployeePage
      */
     public EmployeePageAdmin() {
         initComponents();
+         
     }
 
     /**
@@ -37,14 +44,16 @@ public class EmployeePageAdmin extends javax.swing.JFrame {
         jTextField2 = new javax.swing.JTextField();
         jTextField3 = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
-        jCheckBox1 = new javax.swing.JCheckBox();
-        jButton3 = new javax.swing.JButton();
+        chkRegAdmin = new javax.swing.JCheckBox();
+        btnReg = new javax.swing.JButton();
         jLabel10 = new javax.swing.JLabel();
-        jTextField10 = new javax.swing.JTextField();
-        jTextField11 = new javax.swing.JTextField();
+        txtRegName = new javax.swing.JTextField();
+        txtRegPhone = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
-        jTextField12 = new javax.swing.JTextField();
+        txtRegEmail = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        txtRegPw = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jList1 = new javax.swing.JList<>();
@@ -118,21 +127,24 @@ public class EmployeePageAdmin extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Mina kontakuppgifter", jPanel1);
 
-        jCheckBox1.setText("Registrera som administratör");
+        chkRegAdmin.setText("Registrera som administratör");
 
-        jButton3.setText("Registrera");
+        btnReg.setText("Registrera");
+        btnReg.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegActionPerformed(evt);
+            }
+        });
 
         jLabel10.setText("Namn:");
-
-        jTextField10.setEditable(false);
-
-        jTextField11.setEditable(false);
 
         jLabel11.setText("Telefon:");
 
         jLabel12.setText("Email:");
 
-        jTextField12.setEditable(false);
+        jLabel7.setText("Lösenord:");
+
+        txtRegPw.setBackground(new java.awt.Color(240, 240, 240));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -140,46 +152,55 @@ public class EmployeePageAdmin extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel11)
-                                    .addComponent(jLabel12))
-                                .addGap(8, 8, 8))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel10)
-                                .addGap(18, 18, 18)))
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jCheckBox1)
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jTextField10)
-                                .addComponent(jTextField11)
-                                .addComponent(jTextField12, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addComponent(jButton3))
-                .addContainerGap(160, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(chkRegAdmin)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(btnReg, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                            .addComponent(jLabel7)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(txtRegPw, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel2Layout.createSequentialGroup()
+                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel11)
+                                        .addComponent(jLabel12))
+                                    .addGap(8, 8, 8))
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                    .addComponent(jLabel10)
+                                    .addGap(18, 18, 18)))
+                            .addGap(6, 6, 6)
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(txtRegPhone, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtRegEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtRegName, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addGap(0, 0, 0))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(22, 22, 22)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtRegName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel10))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtRegPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel11))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtRegEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel12))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jCheckBox1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtRegPw, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7))
                 .addGap(18, 18, 18)
-                .addComponent(jButton3)
-                .addContainerGap(65, Short.MAX_VALUE))
+                .addComponent(chkRegAdmin)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+                .addComponent(btnReg)
+                .addGap(52, 52, 52))
         );
 
         jTabbedPane1.addTab("Registrera", jPanel2);
@@ -282,6 +303,50 @@ public class EmployeePageAdmin extends javax.swing.JFrame {
         startPage.setVisible(true);
     }//GEN-LAST:event_btnReturnToStartPageActionPerformed
 
+    private void btnRegActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegActionPerformed
+        
+        //if(Validation.checkIfTxtIsEmpty(txtRegName));
+        //if(Validation.checkIfTxtIsEmpty(txtRegPhone));
+        //if(Validation.checkIfTxtIsEmpty(txtRegEmail));
+        //if(Validation.checkIfTxtIsEmpty(txtRegPw));
+        //Check if the textfields is empty.
+        try{
+            
+        String name = txtRegName.getText();
+        String phone = txtRegPhone.getText();
+        String pw = txtRegPw.getText();
+        String email = txtRegEmail.getText();
+        //Get values from the textfields to String.
+        
+        String admin = "1";
+        String notAdmin = "0";
+        
+        String increment = Validation.hämtaIdb().getAutoIncrement("EMPLOYEE", "EMPLOYEEID");
+        //Automatic EmpleyeeID.
+        
+             if(chkRegAdmin.isSelected()==true) //If the checkbox for admin is checked.
+                {
+                  String sql = "INSERT INTO EMPLOYEE VALUES ('" + increment + "', '" + name + "', '" + email + "', " + admin + ", '" + pw + "', '" + phone + "')";
+                  Validation.hämtaIdb().insert(sql);
+                  JOptionPane.showMessageDialog(null, "Anställd tillagd som admin!");
+                }  
+                  else { //If the checkbox isn't checked.
+                          String sql1 = "INSERT INTO EMPLOYEE VALUES ('" + increment + "', '" + name + "', '" + email + "', " + notAdmin + ", '" + pw + "', '" + phone + "')";
+                          Validation.hämtaIdb().insert(sql1);  
+                          JOptionPane.showMessageDialog(null, "Anställd tillagd!");
+                       }
+        
+        txtRegName.setText("");
+        txtRegPhone.setText("");
+        txtRegEmail.setText("");
+        txtRegPw.setText("");
+        //Making the textfields empty again.
+           }
+           catch (InfException e){
+        JOptionPane.showMessageDialog(null, "Fel!" + e);
+                                 }    
+    }//GEN-LAST:event_btnRegActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -319,10 +384,10 @@ public class EmployeePageAdmin extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnReg;
     private javax.swing.JButton btnReturnToStartPage;
+    private javax.swing.JCheckBox chkRegAdmin;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -332,6 +397,7 @@ public class EmployeePageAdmin extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JList<String> jList1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -339,13 +405,14 @@ public class EmployeePageAdmin extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField10;
-    private javax.swing.JTextField jTextField11;
-    private javax.swing.JTextField jTextField12;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField jTextField9;
+    private javax.swing.JTextField txtRegEmail;
+    private javax.swing.JTextField txtRegName;
+    private javax.swing.JTextField txtRegPhone;
+    private javax.swing.JTextField txtRegPw;
     // End of variables declaration//GEN-END:variables
 }
